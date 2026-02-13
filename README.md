@@ -1,24 +1,26 @@
-🔧 What This System Does
-Captures property inquiries via webhook (simulating listing platforms)
-Uses AI scoring logic to rank lead quality
-Automatically assigns high-priority leads to available agents
-Sends instant SMS & email responses within seconds
-Syncs lead data to CRM / Google Sheets
-Triggers follow-up reminders if no response is recorded
+# AI-Powered Real Estate Lead Conversion Engine
 
-📈 Business Impact
-Reduces response time from ~20 minutes to under 2 minutes
-Prevents missed high-intent buyers
-Improves agent efficiency with smart routing
-Creates a structured lead conversion pipeline
+An end-to-end automation workflow for real estate teams to capture, qualify, and convert property inquiries in real time.
+This system reduces manual lead handling by automatically scoring incoming inquiries using AI, routing them to the right agent, and triggering instant SMS/email follow-ups.
 
-🛠 Tech Stack
-n8n (workflow automation)
-Webhooks
-OpenAI API (lead scoring logic)
-Google Sheets / CRM API
-Whatsapp
-Conditional routing & delay nodes
+---
 
-🎯 Purpose
-Designed as a scalable automation blueprint for modern real estate agencies looking to increase lead conversion and eliminate manual handling of property inquiries.
+## Overview
+
+This workflow simulates incoming property leads from listing platforms and processes them through a structured conversion pipeline. It is designed to:
+
+- Reduce response time
+- Prevent missed opportunities
+- Improve operational efficiency
+
+---
+
+## Features
+
+- Capture property inquiries via webhook (simulated listing platform)
+- Structure and validate lead data
+- AI-based scoring to rank lead intent and priority
+- Automatic agent assignment based on lead score
+- Instantmail notifications
+- CRM or Google Sheets integration
+- Automated follow-
