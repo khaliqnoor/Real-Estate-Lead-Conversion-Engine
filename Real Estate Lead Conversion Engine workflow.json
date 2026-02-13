@@ -1,0 +1,1270 @@
+{
+  "name": "Real estate lead follow up worlfow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a professional and polite real estate assistant replying to property inquiries on WhatsApp.\n\nRules:\n\nKeep messages short and natural.\n\nIf the user writes in English, reply in English.\n\nIf the user writes in Urdu, reply in Urdu.\n\nIf the user writes in Urdu-English mix, reply in the same style.\n\nBe polite and professional.\n\nLook for the sheet in Tool if the lead is asking about any questions which are related to the ones which are in the faq sheet.\n\nFirst do greeting and then if ask about any property then politely respond with the link to fill and then our team will contact shortly .\nYour responses should just seem as human receptionist not AI Bot\nDo not ask multiple questions in chat.\nDirect the user to complete the form instead.\nthis is the form link: https://tally.so/r/VL5yaN\n\n\nDo not output JSON.\nOnly output the WhatsApp message."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1808,
+        -352
+      ],
+      "id": "1a77d59c-775f-4807-8d49-33be66070632",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1712,
+        -128
+      ],
+      "id": "f77ae9bf-343e-41f5-8072-ef1d959492ff",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1888,
+        -128
+      ],
+      "id": "d47dfe5e-91b1-4909-b8b4-dffdd98c25c1",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "6HPwYqXoGXF0FMUo",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ",
+          "mode": "list",
+          "cachedResultName": "whatsapp Real estate Bot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1194532596,
+          "mode": "list",
+          "cachedResultName": "FAQs Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit#gid=1194532596"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -1536,
+        -128
+      ],
+      "id": "5366501d-c30e-4e03-95ab-fab69e8cc491",
+      "name": "Get Data about the properties",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gVvVoAXaVj1fvZJ6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b0573fe2-2df6-4423-967a-8e1e0d05edd9",
+              "leftValue": "={{ $json.Budget }}",
+              "rightValue": 10000000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "0d7a8ab1-32ba-4586-b99d-93e113fb2656",
+              "leftValue": "={{ $json.Timeline }}",
+              "rightValue": 3,
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1520,
+        32
+      ],
+      "id": "3a851339-0f09-458d-809e-ea484d09bbce",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ",
+          "mode": "list",
+          "cachedResultName": "whatsapp Real estate Bot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2040589849,
+          "mode": "list",
+          "cachedResultName": "Property Buyer Qualification Form",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit#gid=2040589849"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Submission ID": "={{ $('Get row(s) in sheet').item.json['Submission ID'] }}",
+            "Status": "HOT"
+          },
+          "matchingColumns": [
+            "Submission ID"
+          ],
+          "schema": [
+            {
+              "id": "Submission ID",
+              "displayName": "Submission ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Respondent ID",
+              "displayName": "Respondent ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Submitted at",
+              "displayName": "Submitted at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Area",
+              "displayName": "Area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Timeline",
+              "displayName": "Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1216,
+        -192
+      ],
+      "id": "b7df9451-557e-4492-92e1-3273f5bbd150",
+      "name": "Store Hot lead",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gVvVoAXaVj1fvZJ6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ",
+          "mode": "list",
+          "cachedResultName": "whatsapp Real estate Bot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2040589849,
+          "mode": "list",
+          "cachedResultName": "Property Buyer Qualification Form",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit#gid=2040589849"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "COLD",
+            "Email": "={{ $json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Submission ID",
+              "displayName": "Submission ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Respondent ID",
+              "displayName": "Respondent ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Submitted at",
+              "displayName": "Submitted at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Area",
+              "displayName": "Area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Timeline",
+              "displayName": "Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1216,
+        240
+      ],
+      "id": "f186506a-1e12-48de-97b6-6c6c3790f913",
+      "name": "Store COld lead",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gVvVoAXaVj1fvZJ6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AC7LWQD38",
+          "mode": "list",
+          "cachedResultName": "social"
+        },
+        "text": "=New Lead: {{ $('Get row(s) in sheet').item.json.Name }}\n\nEmail: {{ $('Get row(s) in sheet').item.json.Email }}\n\nBudget: {{ $('Get row(s) in sheet').item.json.Budget }}\n\nArea: {{ $('Get row(s) in sheet').item.json.Area }}\n\nStatus: {{ $json.Status }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -880,
+        -400
+      ],
+      "id": "aa6a0f18-f974-4aa5-b562-38fb381c56d8",
+      "name": "Send a message",
+      "webhookId": "5cb60d90-33e2-4059-b967-905e6915b1ae",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "gSWzKh63hKWZ5tWk",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').item.json.Email }}",
+        "subject": "={{ $json.output.subject }}\n",
+        "emailType": "text",
+        "message": "={{ $json.output.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -512,
+        -192
+      ],
+      "id": "a0601d11-0fe3-4837-af2d-177575ccc4de",
+      "name": "Send a message1",
+      "webhookId": "75a28388-bcfd-40ef-b057-6dd1b30aa9a6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ksnWEQQ8dUvXTzKB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Name: {{ $('Get row(s) in sheet').item.json.Name }}\nEmail: {{ $('Get row(s) in sheet').item.json.Email }}\nIntent: {{ $('Get row(s) in sheet').item.json.Intent }}\nArea: {{ $('Get row(s) in sheet').item.json.Area }}\nBudget: {{ $('Get row(s) in sheet').item.json.Budget }}\nTimeline: {{ $('Get row(s) in sheet').item.json.Timeline }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a professional real estate sales assistant.\n\nYour task is to write a personalized email to a HOT property lead.\n\nA lead is considered HOT because:\n\nThey have a clear budget\n\nTheir timeline is within 0–3 months\n\nThey have selected a specific area or property type\n\nUse the lead data provided:\n\nName {{ $('Get row(s) in sheet').item.json.Name }}\nBudget {{ $('Get row(s) in sheet').item.json.Budget }}\nPreferred Area {{ $('Get row(s) in sheet').item.json.Area }}\nTimeline {{ $('Get row(s) in sheet').item.json.Timeline }}\n\nRules:\n\nKeep the email short and professional.\n\nPersonalize using their name and requirements.\n\nShow urgency but do not sound pushy.\n\nsay that our team will contact you soon\nthey have already filled the form now just email them to notify .\n\nDo NOT mention anything about forms, automation, AI, or internal systems.\n\nNo emojis.\n\nSubject line must be included.\n\nIf the lead submitted in Urdu → write fully in Urdu.\n\nIf the lead submitted in English → write fully in English.\n\nIf the lead used Urdu-English mix → respond in natural Urdu-English mix.\n\nEmail structure:\n\nSubject: Clear and relevant to their requirement\n\nBody:\n\nGreeting using name\n\nAcknowledge their requirement\n\nMention 1–2 strong matching options (generic description, no fake details)\n\n\nProfessional closing\n\nTone:\nConfident. Helpful. Clear. Not overly formal. Not casual.\n\nEnd with:\nReal Estate Consultant\nABC Real Estate Agency\n\n\nReturn the output strictly in the following json format:\n{\n\"subject\": \"\",\n\"body\": \"\"\n}\n\nSUBJECT:\n<write only the subject line here>\n\nBODY:\n<write only the email body here>\n\nDo not include anything else.\nDo not include explanations.\nDo not repeat labels inside the body.\nDo not add extra formatting.\n\n🔥 Example Output (English Lead)\n\nSubject: Properties Available in DHA Within Your Budget\n\nHi Ahmed,\n\nThank you for sharing your interest in a 3-bedroom apartment in DHA with a budget of 35M and a purchase timeline within the next 2 months.\n\nWe currently have a few strong options that match your criteria, including ready-to-move units and newly launched inventory with good investment potential.\n\n\nLooking forward to assisting you.\n\nReal Estate Consultant\nABC Properties"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -944,
+        -192
+      ],
+      "id": "7a67a84e-bf60-443c-aa67-b983f128d6c3",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -944,
+        16
+      ],
+      "id": "19c4ccc2-878d-4d70-aec0-e67ede8dc7a7",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "6HPwYqXoGXF0FMUo",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"subject\": \"...\",\n  \"body\": \"...\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -800,
+        16
+      ],
+      "id": "2ce4094a-a804-4798-a39c-d76cfa06c957",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"subject\": \"...\",\n  \"body\": \"...\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -800,
+        448
+      ],
+      "id": "56fd3f0d-0d7d-4971-80af-2e2d44d61a9a",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        448
+      ],
+      "id": "f3eafb93-acf4-4e77-856f-4e1c5b2d34eb",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "6HPwYqXoGXF0FMUo",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Name: {{ $('If').item.json.Name }}\nEmail: {{ $('If').item.json.Email }}\nIntent: {{ $('If').item.json.Intent }}\nArea: {{ $('If').item.json.Area }}\nBudget: {{ $('If').item.json.Budget }}\nTimeline: {{ $('If').item.json.Timeline }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a professional real estate sales assistant.\n\nYour task is to write a personalized email to a COLD property lead.\n\nA lead is considered COLD because:\n\nTheir timeline is more than 3 months\n\nThey are still exploring\n\nThey do not have immediate buying urgency\n\nUse the lead data provided:\n\nName {{ $('If').item.json.Name }}\nBudget {{ $('If').item.json.Budget }}\nPreferred Area {{ $('If').item.json.Area }}\nTimeline {{ $('If').item.json.Timeline }}\n\nRules:\n\nKeep the email short and professional.\n\nThis is a light nurture email — do NOT create urgency.\n\nAcknowledge their interest and timeline.\n\nReassure them that it is completely fine if they are still exploring.\n\nMention that you will keep them updated with relevant opportunities.\n\nSay that our team will contact them if a suitable option becomes available.\n\nDo NOT pressure them to book immediately.\n\nDo NOT mention anything about forms, automation, AI, or internal systems.\n\nNo emojis.\n\nSubject line must be included.\n\nIf the lead submitted in Urdu → write fully in Urdu.\n\nIf the lead submitted in English → write fully in English.\n\nIf the lead used Urdu-English mix → respond in natural Urdu-English mix.\n\nEmail structure:\n\nSubject: Calm and relevant to their requirement\n\nBody:\n\nGreeting using name\nAcknowledge their requirement\nReassure them about their timeline\nMention that suitable options will be shared\nProfessional closing\n\nTone:\nCalm. Professional. Supportive. Not urgent. Not salesy.\n\nEnd with:\n\nReal Estate Consultant\nABC Real Estate Agency\n\nReturn the output strictly in the following json format:\n\n{\n\"subject\": \"\",\n\"body\": \"\"\n}\n\nDo not include anything else.\nDo not include explanations.\nDo not add extra formatting.\nDo not repeat labels inside the body."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -976,
+        240
+      ],
+      "id": "6a6f77b8-b243-413a-a17f-a7f30339f244",
+      "name": "Writing Email"
+    },
+    {
+      "parameters": {
+        "formId": "VL5yaN"
+      },
+      "type": "n8n-nodes-tallyforms.tallyTrigger",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        32
+      ],
+      "id": "d60b0adb-3f19-481b-88f8-3b8708342b72",
+      "name": "Tally Trigger",
+      "webhookId": "8416cd10-7262-44d3-a90e-b349354a9a3c",
+      "credentials": {
+        "tallyApi": {
+          "id": "O5Zre1P4VRWdeYyW",
+          "name": "Tally account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ",
+          "mode": "list",
+          "cachedResultName": "whatsapp Real estate Bot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2040589849,
+          "mode": "list",
+          "cachedResultName": "Property Buyer Qualification Form",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xm5DOxIuKQCgGUN8SH-M6Jm7b6lmqUXQIT2oeh4_8TQ/edit#gid=2040589849"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Respondent ID": "={{ $json.respondentId }}",
+            "Name": "={{ $json.question_NAX0Zp.value }}",
+            "Email": "={{ $json.question_qbGPl5.value }}",
+            "Intent": "={{ $json.question_QAR0Q1.value }}",
+            "Area": "={{ $json.question_9dZlKX.value }}",
+            "Budget": "={{ $json.question_eBrEXQ.value }}",
+            "Timeline": "={{ $json.question_WAR07R.value }}",
+            "Submitted at": "={{ $json.createdAt }}",
+            "Submission ID": "={{ $json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Submission ID",
+              "displayName": "Submission ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Respondent ID",
+              "displayName": "Respondent ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Submitted at",
+              "displayName": "Submitted at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intent",
+              "displayName": "Intent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Area",
+              "displayName": "Area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timeline",
+              "displayName": "Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1728,
+        32
+      ],
+      "id": "689e5e34-c7fa-4fbb-83c1-fa21faeadc5f",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gVvVoAXaVj1fvZJ6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store COld lead').item.json.Email }}",
+        "subject": "={{ $json.output.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.output.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -640,
+        240
+      ],
+      "id": "a9dbab89-acfd-4c90-86f2-7a9a666aca63",
+      "name": "Immediate Email",
+      "webhookId": "9e8af06d-24fe-4c98-97ec-694676c350b8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ksnWEQQ8dUvXTzKB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -432,
+        240
+      ],
+      "id": "47942b68-293a-44ae-b483-24d2227f14ed",
+      "name": "Wait",
+      "webhookId": "ef0fb928-c113-45ae-9133-9674e86c0c90"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store COld lead').item.json.Email }}",
+        "subject": "=Market Update in Area \"{{ $('Append row in sheet').item.json.Area }}\"",
+        "emailType": "text",
+        "message": "=Hi {{ $('Append row in sheet').item.json.Name }},\n\nI wanted to share a quick update regarding the property market in {{ $('Append row in sheet').item.json.Area }}.  We’re seeing steady movement in the property segment within your mentioned budget range. A few new options have recently become available that may align with your preferences.  Whenever you feel ready to explore further, I’d be happy to share details or arrange a brief discussion.\n\nReal Estate Consultant\nABC Real Estate Agency",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        240
+      ],
+      "id": "5ff3f267-a352-4435-bb0c-dee6c3281e69",
+      "name": "send email after 9 days",
+      "webhookId": "9f684032-f1ae-4947-aa73-8fe7756c5d57",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ksnWEQQ8dUvXTzKB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        240
+      ],
+      "id": "457006fb-79ff-4e64-b9b6-288c371bbb4b",
+      "name": "Wait1",
+      "webhookId": "bf675c17-82e0-4478-86b7-53a4b13f05ec"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store COld lead').item.json.Email }}",
+        "subject": "Checking Availability for Future Property Plans",
+        "emailType": "text",
+        "message": "=Hi {{ $('Append row in sheet').item.json.Name }},\n\nI hope things are going well on your end.  If you’re still considering property options in {{ $('Append row in sheet').item.json.Area }}, I’m here to assist whenever the timing feels right for you.  We continue to monitor new opportunities that fit your budget and preferred property type, and I’d be glad to share suitable options when needed.  Feel free to reach out at your convenience. \n\nReal Estate Consultant\nABC Real Estate Agency",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        240
+      ],
+      "id": "a740d539-8e50-494a-a2b9-cec53e6edb39",
+      "name": "Send email after 20 days",
+      "webhookId": "1feebba8-5e6d-4bdc-8e0d-7ff63964315c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ksnWEQQ8dUvXTzKB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2000,
+        -352
+      ],
+      "id": "cee998f2-ee90-4fe1-9690-eedc191a8308",
+      "name": "WhatsApp Trigger",
+      "webhookId": "04dbb591-a839-4b30-8772-66646afe5d59",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "Xh913eqlXnI8M7vp",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -1456,
+        -352
+      ],
+      "id": "bbd1d677-a296-439c-b509-ac506390d42b",
+      "name": "Send message",
+      "webhookId": "e4a8fbbb-5813-4ca0-8fce-a2fa59374308",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "Ly6nW3pkruEh2XUh",
+          "name": "WhatsApp account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "AI Agent1": [
+      {
+        "json": {
+          "output": {
+            "subject": "Premium Rental Options in DHA Phase 2 Lahore Within Your Budget",
+            "body": "Hi Khan,\n\nThank you for sharing your interest in renting within DHA Phase 2 Lahore with a budget of 4.5 billion and a timeline of 3 months.\n\nWe have several premium rental properties in DHA Phase 2 that match your budget and preferences, including luxury villas and spacious apartments with modern amenities.\n\nOur team will contact you soon to discuss these options in detail.\n\nReal Estate Consultant\nABC Real Estate Agency"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Send a message1": [
+      {
+        "json": {
+          "id": "19c55f53d3aa59ad",
+          "threadId": "19c55f53d3aa59ad",
+          "labelIds": [
+            "SENT"
+          ]
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Tally Trigger": [
+      {
+        "json": {
+          "id": "aQVeAoX",
+          "formId": "VL5yaN",
+          "formName": "Property Buyer Qualification Form",
+          "respondentId": "eqAEABO",
+          "createdAt": "2026-02-13T09:39:45.000Z",
+          "question_NAX0Zp": {
+            "label": "Name",
+            "value": "Aryan khan",
+            "type": "INPUT_TEXT"
+          },
+          "question_qbGPl5": {
+            "label": "Email",
+            "value": "khaliqnoorkhan47@gmail.com ",
+            "type": "INPUT_TEXT"
+          },
+          "question_QAR0Q1": {
+            "label": "Intent",
+            "value": "Buying",
+            "type": "DROPDOWN"
+          },
+          "question_9dZlKX": {
+            "label": "Area",
+            "value": "just looking for",
+            "type": "INPUT_TEXT"
+          },
+          "question_eBrEXQ": {
+            "label": "Budget",
+            "value": 2000000,
+            "type": "INPUT_NUMBER"
+          },
+          "question_WAR07R": {
+            "label": "Timeline",
+            "value": "5 months",
+            "type": "INPUT_TEXT"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Append row in sheet": [
+      {
+        "json": {
+          "Respondent ID": "eqAEABO",
+          "Name": "Aryan khan",
+          "Email": "khaliqnoorkhan47@gmail.com ",
+          "Intent": "Buying",
+          "Area": "just looking for",
+          "Budget": 2000000,
+          "Timeline": "5 months",
+          "Submitted at": "2026-02-13T09:39:45.000Z",
+          "Submission ID": "aQVeAoX"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Store COld lead": [
+      {
+        "json": {
+          "Status": "COLD",
+          "Email": "khaliqnoorkhan47@gmail.com "
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Writing Email": [
+      {
+        "json": {
+          "output": {
+            "subject": "Regarding Your Property Search with a 5-Month Timeline",
+            "body": "Dear Aryan Khan,\n\nThank you for sharing your interest in buying a property. We understand that you are currently exploring options with a timeline of around five months, and we want to assure you that this is perfectly fine.\n\nDuring this period, we will keep you updated with suitable opportunities that match your budget and preferences. Our team will also reach out to you if we find any options that could meet your needs.\n\nPlease feel free to take your time in exploring, and do not hesitate to contact us if you have any questions.\n\nBest regards,\n\nReal Estate Consultant\nABC Real Estate Agency"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Data about the properties": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Store Hot lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Store COld lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Hot lead": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store COld lead": {
+      "main": [
+        [
+          {
+            "node": "Writing Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Writing Email",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Writing Email",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tally Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Writing Email": {
+      "main": [
+        [
+          {
+            "node": "Immediate Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Immediate Email": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "send email after 9 days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send email after 9 days": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Send email after 20 days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "06e1c973-707f-4242-8431-0c3a1929e74a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ef2babe1ba8b6d90b9b7f6160cbcd978a245ff55e340853c4a2f95d19f90886c"
+  },
+  "id": "6jqDy8qe0Vgc7R6twAfmo",
+  "tags": []
+}
